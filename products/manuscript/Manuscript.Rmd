@@ -64,10 +64,16 @@ knitr::kable(resulttable, caption = 'Data summary table.')
 ```
 
 
-Figure \@ref(fig:resultfigure) shows a scatterplot figure produced by one of the R scripts.
+Figure \@ref(fig:resultfigure1) shows a line graph figure produced by one of the R scripts.
 
-```{r resultfigure,  fig.cap='Analysis figure.', echo=FALSE}
-knitr::include_graphics("../../results/resultfigure.png")
+```{r resultfigure1,  fig.cap='Analysis figure.', echo=FALSE}
+knitr::include_graphics("../../results/resultfigure1.png")
+```
+
+Figure \@ref(fig:resultfigure2) shows a line graph figure produced by one of the R scripts.
+
+```{r resultfigure2,  fig.cap='Analysis figure.', echo=FALSE}
+knitr::include_graphics("../../results/resultfigure2.png")
 ```
 
 
@@ -79,7 +85,14 @@ Example table \@ref(tab:resulttable) shows a table summarizing a linear model fi
 
 ```{r resulttable,  echo=FALSE}
 resulttable=readRDS("../../results/resulttable.rds")
-knitr::kable(resulttable, caption = 'Linear model fit table.')
+knitr::kable(resulttable, caption = 'LM fit for X7.day_avg_group_cases_per_100k and Administered_Dose1_pct_agegroup.')
+```
+
+Example table \@ref(tab:resulttable) shows a table summarizing a linear model fit.
+
+```{r resulttableCD,  echo=FALSE}
+resulttable=readRDS("../../results/resulttable1.rds")
+knitr::kable(resulttable, caption = 'LM fit for X7.day_avg_group_cases_per_100k and Series_Complete_Pop_pct_agegroup.')
 ```
 
 

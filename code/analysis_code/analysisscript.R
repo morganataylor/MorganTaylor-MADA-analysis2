@@ -5,6 +5,7 @@
 #and saves the results to the results folder
 
 #load needed packages. make sure they are installed.
+library(tidyverse)
 library(ggplot2) #for plotting
 library(broom) #for cleaning up output from lm()
 library(here) #for data loading/saving
@@ -37,33 +38,48 @@ summary_df = data.frame(do.call(cbind, lapply(mydata, summary)))
 summarytable_file = here("results", "summarytable.rds")
 saveRDS(summary_df, file = summarytable_file)
 
+# Create a plot that shows number of number of administered doses percentage for each age group 
+plot1 <-mydata %>% ggplot(aes(x=AgeGroupVacc,y=Administered_Dose1_pct_agegroup))+
+                geom_line()+
+                labs(x="Age_group", y="Dose", title= "Flu Shot Doses")
+#look at figure
+plot(plot1)
 
-#make a scatterplot of data
-#we also add a linear regression line to it
-p1 <- mydata %>% ggplot(aes(x=Height, y=Weight)) + geom_point() + geom_smooth(method='lm')
+# Create a plot that shows number of avg group cases for each age group
+plot2 <- mydata %>% ggplot(aes(x=AgeGroupVacc,y=X7.day_avg_group_cases_per_100k))+
+      geom_line()+
+     labs(x="Age_group", y="avg_group_cases", title= "Cumulative Flu Shot Doses")
 
 #look at figure
-plot(p1)
+plot(plot2)
 
 #save figure
-figure_file = here("results","resultfigure.png")
-ggsave(filename = figure_file, plot=p1) 
+figure_file1 = here("results","resultfigure1.png")
+ggsave(filename = figure_file1, plot=plot1)  
 
-######################################
-#Data fitting/statistical analysis
-######################################
+#save figure
+figure_file2 = here("results","resultfigure2.png")
+ggsave(filename = figure_file2, plot=plot2) 
 
 # fit linear model
-lmfit <- lm(Weight ~ Height, mydata)  
+lmfit <- lm(X7.day_avg_group_cases_per_100k ~ Administered_Dose1_pct_agegroup, mydata)  
+lmfit2 <- lm(X7.day_avg_group_cases_per_100k ~ Series_Complete_Pop_pct_agegroup, mydata)
+
 
 # place results from fit into a data frame with the tidy function
-lmtable <- broom::tidy(lmfit)
+lmfittable <- broom::tidy(lmfit)
+lmfit2table <- broom::tidy(lmfit2)
 
 #look at fit results
-print(lmtable)
+print(lmfittable)
+print(lmfit2table)
+
 
 # save fit results table  
-table_file = here("results", "resulttable.rds")
-saveRDS(lmtable, file = table_file)
+dose_file = here("results", "resulttable.rds")
+saveRDS(lmfittable, file = dose_file)
+
+avgcase_file = here("results", "resulttable1.rds")
+saveRDS(lmfit2table, file = avgcase_file)
 
   
